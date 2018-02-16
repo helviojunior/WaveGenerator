@@ -71,7 +71,8 @@ class WaveFile {
 			$data = new stdClass;
 			$data->ID        	= array(0x64, 0x61, 0x74, 0x61);   //"data" big endian
 			$data->Size = self::GetLittleEndianByteArray($dataSize);
-			$data->Data = str_split(self::generateRandomString( $dataSize ));
+			//$data->Data = str_split(self::generateRandomString( $dataSize ));
+			$data->Data = self::generateRandomBytes($dataSize);
 			
 			//RIFF
 			foreach($riff->ChunkID as $val) {
@@ -445,6 +446,17 @@ class WaveFile {
 		}
 		return $randomString;
 	}
+	
+	
+	private static function generateRandomBytes($length = 10) {
+		
+		$randomData = [];
+		for ($i = 0; $i < $length; $i++) {
+			$randomData[] = rand(50, 150);
+		}
+		return $randomData;
+	}
+	
 	
 }
 
