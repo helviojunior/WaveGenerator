@@ -139,7 +139,7 @@ class WaveFile {
     * 
     * @return   mixed               Information parsed from the file; FALSE when file doesn't exists or not readable
     */
-    public static function CompareFiles($file1, $file2, $trim = false) {
+    public static function CompareFiles($file1, $file2, $threshold = 0) {
 		$wav1 = self::ReadFile($file1, true);
 		$wav2 = self::ReadFile($file2, true);
 
@@ -160,7 +160,7 @@ class WaveFile {
 	
 		
 	
-		return self::calcSimilarity($wav1['subchunk2']['data'], $wav2['subchunk2']['data'], 15);
+		return self::calcSimilarity($wav1['subchunk2']['data'], $wav2['subchunk2']['data'], $threshold);
 	
 	}
 	
