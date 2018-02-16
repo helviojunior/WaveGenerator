@@ -140,8 +140,8 @@ class WaveFile {
     * @return   mixed               Information parsed from the file; FALSE when file doesn't exists or not readable
     */
     public static function CompareFiles($file1, $file2, $trim = false) {
-		$wav1 = WaveFileReader::ReadFile($file1, true);
-		$wav2 = WaveFileReader::ReadFile($file2, true);
+		$wav1 = self::ReadFile($file1, true);
+		$wav2 = self::ReadFile($file2, true);
 
 		if ($wav1['subchunk1']['audioformat'] != $wav2['subchunk1']['audioformat'])
 			return false;
@@ -160,7 +160,7 @@ class WaveFile {
 	
 		
 	
-		return self::calcSimilarity($wav1['subchunk2']['data'], $wav2['subchunk2']['data']);
+		return self::calcSimilarity($wav1['subchunk2']['data'], $wav2['subchunk2']['data'], 15);
 	
 	}
 	
@@ -352,7 +352,7 @@ class WaveFile {
         return array_pop($r);
     }
 	
-	private static function calcSimilarity($a, $b){
+	private static function calcSimilarity($a, $b, $threshold = 0){
 		
 		/*
 		if (!is_array($a))
@@ -383,7 +383,8 @@ class WaveFile {
 		$similarity = $i = $j = 0;
 	   
 		while (($i < $len1) && isset($str2[$j])) {
-			if ($str1[$i] == $str2[$j]) {
+			//if ($str1[$i] == $str2[$j]) {
+			if (($str1[$i] >= $str2[$j] - $threshold) && ($str1[$i] <= $str2[$j] + $threshold)) {
 				$similarity++;
 				$i++;
 				$j++;
